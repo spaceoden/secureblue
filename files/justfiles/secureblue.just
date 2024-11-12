@@ -82,15 +82,16 @@ remove-kargs-hardening:
 # Harden flatpaks by preloading hardened_malloc (highest supported hwcap)
 harden-flatpak:
     #!/usr/bin/bash
-    flatpak override --user --filesystem=host-os:ro
+    flatpak="${1:-}"
+    flatpak override --user --filesystem=host-os:ro $flatpak
     uarches="$(/usr/lib64/ld-linux-x86-64.so.2 --help | grep '(supported, searched)' | cut -d'v' -f2)"
     bestuarch="${uarches:0:1}"
     if [ -z "$bestuarch" ] ; then
-        echo "No microarchitecture support detected. Using default x86-64-v1 architecture."
-        flatpak override --user --env=LD_PRELOAD=/var/run/host/usr/lib64/libhardened_malloc.so
+        echo "No microarchitecture support detected. Using default x86-64-v1 architecture${flatpak:+" for $flatpak's malloc"}."
+        flatpak override --user --env=LD_PRELOAD=/var/run/host/usr/lib64/libhardened_malloc.so $flatpak
     else
-        echo "x86-64-v$bestuarch support detected. Using x86-64-v$bestuarch microarchitecture."
-        flatpak override --user --env=LD_PRELOAD=/var/run/host/usr/lib64/glibc-hwcaps/x86-64-v"$bestuarch"/libhardened_malloc.so
+        echo "x86-64-v$bestuarch support detected. Using x86-64-v$bestuarch microarchitecture${flatpak:+" for $flatpak's malloc"}."
+        flatpak override --user --env=LD_PRELOAD=/var/run/host/usr/lib64/glibc-hwcaps/x86-64-v"$bestuarch"/libhardened_malloc.so $flatpak
     fi
 
 # Toggle the cups service on/off
