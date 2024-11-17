@@ -98,9 +98,9 @@ For more technical detail, see [#268](https://github.com/secureblue/secureblue/i
 
 The DNSSEC setting we set in `/etc/systemd/resolved.conf.d/securedns.conf` causes known issues with network connectivity when secureblue is used in a VM. To fix it, comment out `DNSSEC=allow-downgrade` in that file and manually set a dns provider in network settings.
 
-#### How do I get notified of secureblue changes?
+#### Releases
 
-On the secureblue github page, click "Watch", and then "Custom", and select Releases like so:
+To subscribe to release notifications, on the secureblue github page, click "Watch", and then "Custom", and select Releases like so:
 
 ![image](https://github.com/user-attachments/assets/38146394-f730-4b84-8bfa-4fbbf29350ff)
 
@@ -133,6 +133,9 @@ mkdir -p ~/.config/environment.d && echo "GSK_RENDERER=gl" >> ~/.config/environm
 ```
 
 This should no longer be required as of F41: https://discussion.fedoraproject.org/t/gdk-message-error-71-protocol-error-dispatching-to-wayland-display/127927/42
+
+#### Why won't `hardened-chromium` start?
+Try starting `hardened-chromium` from the commandline by running `chromium-browser`. If you get an error about the current profile already running on another device, this is an issue with upstream chromium which can happen when you `rpm-ostree update` or `rpm-ostree rebase`. To fix this, simply run `rm ~/.config/chromium/Singleton*`
 
 #### Why won't `hardened-chromium` start on Nvidia?
 
