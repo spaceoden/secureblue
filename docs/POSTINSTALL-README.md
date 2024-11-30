@@ -19,13 +19,6 @@ rpm-ostree kargs \
     --append-if-missing=initcall_blacklist=simpledrm_platform_driver_init
 ```
 
-### Nvidia optimus laptop
-If you are using an nvidia image on an optimus laptop, run this after installation:
-
-```
-ujust configure-nvidia-optimus
-```
-
 ## Enroll secureboot key
 
 ```
@@ -68,9 +61,8 @@ Setting a GRUB password helps protect the device from physical tampering and mit
 
 To set a GRUB password, use the following command. By default, the password will be required when modifying boot entries, but not when booting existing entries.
 
-```
-sudo grub2-setpassword
-```
+1. `run0`
+2. `grub2-setpassword`
 
 GRUB will prompt for a username and password. The default username is root.
 
@@ -105,6 +97,9 @@ When using a non-wheel user, you can add the user to other groups if you want. F
 - use libvirt: `libvirt`
 - use `adb` and `fastboot`: `plugdev`
 - use systemwide flatpaks: `flatpak`
+
+> [!NOTE]
+> You don't need to login using your wheel user to use it for privileged operations. When logged in as your non-wheel user, polkit will prompt you to authenticate as your wheel user as needed, or when requested by calling `run0`.
 
 ## Setup system DNS
 
