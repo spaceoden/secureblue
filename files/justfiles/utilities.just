@@ -158,7 +158,6 @@ install-steam:
     valid_input="0"
     method_selection=""
     echo "Please select a method to install steam:"
-    echo "    0) Cancel - do not install Steam."
     echo "    1) Flatpak - will enable the flathub-unverified repo"
     echo "    2) Distrobox - will configure the bazzite-arch distrobox image"
     echo "    3) Native layer - will enable the negativo17 Steam repo"
