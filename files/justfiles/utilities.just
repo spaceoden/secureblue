@@ -159,7 +159,7 @@ install-steam:
         echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
         echo "Please run 'ujust toggle-xwayland', then reboot to enable it if you have not already done so"
         toggle_xwayland_now=""
-        read -p "Would you like to toggle Xwayland now? [y/N] " reboot_now
+        read -p "Would you like to toggle Xwayland now? [y/N] " toggle_xwayland_now
         if [[ "$toggle_xwayland_now" == [Yy]* ]]; then
             echo "Running 'ujust toggle-xwayland'"
             ujust toggle-xwayland
