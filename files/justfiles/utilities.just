@@ -163,8 +163,8 @@ install-steam:
     echo "    2) Distrobox - will configure the bazzite-arch distrobox image"
     echo "    3) Native layer - will enable the negativo17 Steam repo"
     while [[ "$valid_input" == "0" ]]; do
-        read -p "Selection [0-3]: " method_selection
-        if [[ "$method_selection" == [0123]* ]]; then
+        read -p "Selection [1-3]: " method_selection
+        if [[ "$method_selection" == [123]* ]]; then
             valid_input="1"
         else
             echo "That is not a valid selection."
@@ -174,10 +174,6 @@ install-steam:
 
     echo "" # blank space
     case "$method_selection" in
-        0)
-            echo "Cancel selected. Exiting and not installing Steam."
-            exit 0
-            ;;
         1)
             echo "Flatpak method selected."
             echo "Enabling Flathub-unverified repo."
