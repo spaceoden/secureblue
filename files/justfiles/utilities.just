@@ -157,7 +157,7 @@ install-steam:
     #!/bin/bash
     if [ -n "$(rpm-ostree status | grep 'kinoite\|sericea\|silverblue\|sway')" ] ; then
         echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
-        echo "Please run 'ujust toggle-xwayland', then reboot to enable it if you have not already done so"
+        echo "If you have not already done so, please run 'ujust toggle-xwayland' and reboot to enable it."
         toggle_xwayland_now=""
         read -p "Would you like to toggle Xwayland now? [y/N] " toggle_xwayland_now
         if [[ "$toggle_xwayland_now" == [Yy]* ]]; then
