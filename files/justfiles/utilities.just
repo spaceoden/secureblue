@@ -180,7 +180,7 @@ install-steam:
             echo "Installing Steam flatpak."
             flatpak install -y flathub com.valvesoftware.Steam
             echo "Disabling hardened_malloc for Steam."
-            flatpak override --user --unset-env=LD_PRELOAD=/var/run/host/usr/lib64/libhardened_malloc.so --unset-env=LD_PRELOAD=/var/run/host/usr/lib64/glibc-hwcaps/x86-64-v*/libhardened_malloc.so --nofilesystem=host-os:ro com.valvesoftware.Steam
+            flatpak override --user --unset-env=LD_PRELOAD --nofilesystem=host-os com.valvesoftware.Steam
             ;;
         2)
             echo "Distrobox method selected."
