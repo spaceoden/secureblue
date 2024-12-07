@@ -198,9 +198,14 @@ install-steam:
             ;;
     esac
 
-    echo "Steam requires support for 32-bit processes/syscalls."
-    echo "This script will now remove the 'ia32_emulation=0' kernel argument if present."
-    rpm-ostree kargs --delete-if-present="ia32_emulation=0"
+    if [ -n "$(rpm-ostree kargs | grep 'ia32_emulation=0')" ] ; then
+        echo "Steam requires support for 32-bit processes/syscalls."
+        echo "This script will now remove the 'ia32_emulation=0' kernel argument."
+        rpm-ostree kargs --delete-if-present="ia32_emulation=0"
+    else
+        echo "Steam requires support for 32-bit processes/syscalls."
+        echo "Do not set the 'ia32_emulation=0' kernel argument."
+    fi
     if [[ "$method_selection" == 3 ]]; then
         echo "Steam native layer installed. Please reboot to access the new deployment"
         reboot_now=""
