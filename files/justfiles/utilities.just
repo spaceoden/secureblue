@@ -218,6 +218,8 @@ install-steam:
     if [ -n "$(rpm-ostree kargs | grep 'ia32_emulation=0')" ] ; then
         echo "This script will now remove the 'ia32_emulation=0' kernel argument."
         rpm-ostree kargs --delete-if-present="ia32_emulation=0"
+    else
+        echo "Do not set the 'ia32_emulation=0' kernel argument."
     fi
     if [[ "$method_selection" == 3 ]]; then
         echo "Steam native layer installed. Please reboot to access the new deployment"
