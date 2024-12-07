@@ -155,6 +155,22 @@ enable-flathub-unfiltered:
 # Install Steam via choice of 3 methods
 install-steam:
     #!/bin/bash
+    if [ -n "$(rpm-ostree status | grep 'kinoite\|sericea\|silverblue\|sway')" ] ; then
+        echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
+        echo "Please run 'ujust toggle-xwayland', then reboot to enable it if you have not already done so"
+        toggle_xwayland_now=""
+        read -p "Would you like to toggle Xwayland now? [y/N] " toggle_xwayland_now
+        if [[ "$toggle_xwayland_now" == [Yy]* ]]; then
+            echo "Running 'ujust toggle-xwayland'"
+            ujust toggle-xwayland
+            reboot_now=""
+            read -p "Would you like to reboot now? [y/N] " reboot_now
+            if [[ "$reboot_now" == [Yy]* ]]; then
+                echo "Rebooting"
+                systemctl reboot
+            fi
+        fi
+    fi
     valid_input="0"
     method_selection=""
     echo "Please select a method to install steam:"
