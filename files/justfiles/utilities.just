@@ -195,16 +195,18 @@ install-steam:
             run0 curl -o /etc/yum.repos.d/negativo-steam.repo https://negativo17.org/repos/fedora-steam.repo
             echo "Installing Steam."
             rpm-ostree install steam
-            echo "Steam native layer installed. Please reboot to access the new deployment"
-            reboot_now=""
-            read -p "Would you like to reboot now? [y/N] " reboot_now
-            if [[ "$reboot_now" == [Yy]* ]]; then
-                echo "Rebooting"
-                systemctl reboot
-            fi
             ;;
     esac
 
     echo "Steam requires support for 32-bit processes/syscalls."
     echo "This script will now remove the 'ia32_emulation=0' kernel argument if present."
     rpm-ostree kargs --delete-if-present="ia32_emulation=0"
+    if [[ "$method_selection" == 3 ]]; then
+        echo "Steam native layer installed. Please reboot to access the new deployment"
+        reboot_now=""
+        read -p "Would you like to reboot now? [y/N] " reboot_now
+        if [[ "$reboot_now" == [Yy]* ]]; then
+            echo "Rebooting"
+            systemctl reboot
+        fi
+    fi
