@@ -150,7 +150,7 @@ with-standard-malloc APP:
 # Add the flathub-unverified flatpak repo
 enable-flathub-unverified:
     #!/usr/bin/bash
-    flatpak remote-add --if-not-exists --user --subset=unverified flathub-unverified https://flathub.org/repo/flathub.flatpakrepo
+    flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Install Steam via choice of 3 methods
 install-steam:
