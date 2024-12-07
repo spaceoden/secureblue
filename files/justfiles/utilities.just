@@ -147,8 +147,8 @@ with-standard-malloc APP:
     #!/usr/bin/bash
     bwrap --dev-bind / / --ro-bind /dev/null /etc/ld.so.preload {{ APP }}
 
-# Add the flathub-unverified flatpak repo
-enable-flathub-unverified:
+# Add the unfiltered Flathub flatpak repo
+enable-flathub-unfiltered:
     #!/usr/bin/bash
     flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -175,8 +175,8 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            echo "Enabling Flathub-unverified repo."
-            ujust enable-flathub-unverified
+            echo "Enabling the unfiltered Flathub repo."
+            ujust enable-flathub-unfiltered
             echo "Installing Steam flatpak."
             flatpak install -y flathub com.valvesoftware.Steam
             echo "Disabling hardened_malloc for Steam."
