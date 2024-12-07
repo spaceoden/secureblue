@@ -199,7 +199,7 @@ install-steam:
             echo "Enabling negativo17 Steam repo."
             run0 curl -o /etc/yum.repos.d/negativo-steam.repo https://negativo17.org/repos/fedora-steam.repo
             echo "Installing Steam."
-            rmp-ostree install steam
+            rpm-ostree install steam
             echo "Steam native layer installed. Please reboot to access the new deployment"
             reboot_now=""
             read -p "Would you like to reboot now? [y/N] " reboot_now
