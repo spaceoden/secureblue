@@ -192,7 +192,7 @@ install-steam:
             echo "Creating bazzite-arch distrobox."
             distrobox-create --unshare-netns --nvidia --image ghcr.io/ublue-os/bazzite-arch --name bazzite-arch -Y
             echo "Exporting Steam from bazzite-arch distrobox."
-            distrobox-enter -n bazzite-arch -- '  distrobox-export --app steam'
+            distrobox-enter -n bazzite-arch -- distrobox-export --app steam
             ;;
         3)
             echo "Native layer method selected."
