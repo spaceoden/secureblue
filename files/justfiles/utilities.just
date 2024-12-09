@@ -176,10 +176,9 @@ install-steam:
     echo "Please select a method to install steam:"
     echo "    1) Flatpak - will enable the flathub-unverified repo"
     echo "    2) Distrobox - will configure the bazzite-arch distrobox image"
-    echo "    3) Native layer - will enable the negativo17 Steam repo"
     while [[ "$valid_input" == "0" ]]; do
-        read -p "Selection [1-3]: " method_selection
-        if [[ "$method_selection" == [123]* ]]; then
+        read -p "Selection [1-2]: " method_selection
+        if [[ "$method_selection" == [12]* ]]; then
             valid_input="1"
         else
             echo "That is not a valid selection."
@@ -205,13 +204,6 @@ install-steam:
             echo "Exporting Steam from bazzite-arch distrobox."
             distrobox-enter -n bazzite-arch -- distrobox-export --app steam
             ;;
-        3)
-            echo "Native layer method selected."
-            echo "Enabling negativo17 Steam repo."
-            run0 curl -o /etc/yum.repos.d/fedora-steam.repo https://negativo17.org/repos/fedora-steam.repo
-            echo "Installing Steam."
-            rpm-ostree install steam
-            ;;
     esac
 
     echo "Steam requires support for 32-bit processes/syscalls."
@@ -220,13 +212,4 @@ install-steam:
         rpm-ostree kargs --delete-if-present="ia32_emulation=0"
     else
         echo "Do not set the 'ia32_emulation=0' kernel argument."
-    fi
-    if [[ "$method_selection" == 3 ]]; then
-        echo "Steam native layer installed. Please reboot to access the new deployment"
-        reboot_now=""
-        read -p "Would you like to reboot now? [y/N] " reboot_now
-        if [[ "$reboot_now" == [Yy]* ]]; then
-            echo "Rebooting"
-            systemctl reboot
-        fi
     fi
