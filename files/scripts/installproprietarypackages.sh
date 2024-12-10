@@ -24,9 +24,9 @@ rpm-ostree override replace \
     gstreamer1-plugin-libav \
     gstreamer1-plugin-vaapi 
 
+# Steam 32bit dependencies
 rpm-ostree install \
   --from repo='fedora-multimedia' \
-    # steam 32bit dependencies
     libva.i686 \
     mesa-libEGL.i686 \
     mesa-vulkan-drivers.i686
