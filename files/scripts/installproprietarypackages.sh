@@ -25,7 +25,7 @@ rpm-ostree override replace \
     gstreamer1-plugin-vaapi 
 
 # Steam 32bit dependencies
-rpm-ostree install \
-    libva.i686 \
-    mesa-libEGL.i686 \
-    mesa-vulkan-drivers.i686
+#rpm-ostree install \
+#    libva.i686 \
+#    mesa-libEGL.i686 \
+#    mesa-vulkan-drivers.i686
