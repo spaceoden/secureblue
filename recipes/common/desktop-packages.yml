@@ -25,10 +25,6 @@ install:
 
   # ensure universal font coverage
   - google-noto-fonts-all
-
-  # steam 32bit dependencies
-  - libva.i686
-  - mesa-libEGL.i686
 remove:
   - firefox
   - firefox-langpacks
