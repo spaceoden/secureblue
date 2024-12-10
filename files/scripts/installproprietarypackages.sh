@@ -26,6 +26,8 @@ rpm-ostree override replace \
 
 # Steam 32bit dependencies
 rpm-ostree install \
+  --experimental \
+  --from repo='fedora-multimedia' \
     libva.i686 \
     mesa-libEGL.i686 \
     mesa-vulkan-drivers.i686
