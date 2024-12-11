@@ -21,8 +21,8 @@ jobs:
       matrix:
         recipe:
           - general/recipe-silverblue-main.yml
-          - general/recipe-silverblue-main-userns.yml
           - general/recipe-cosmic-main.yml
+          - general/recipe-silverblue-main-userns.yml
           - general/recipe-cosmic-main-userns.yml
     steps:
       - name: Checkout repo
