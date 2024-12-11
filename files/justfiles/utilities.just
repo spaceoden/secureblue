@@ -146,3 +146,87 @@ toolbox-assemble CONTAINER="prompt" ACTION="create" FILE="/etc/toolbox/toolbox.i
 with-standard-malloc APP:
     #!/usr/bin/bash
     bwrap --dev-bind / / --ro-bind /dev/null /etc/ld.so.preload {{ APP }}
+
+# Add the unfiltered Flathub flatpak repo
+enable-flathub-unfiltered:
+    #!/usr/bin/bash
+    flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Install Steam via choice of 3 methods
+install-steam:
+    #!/bin/bash
+    if [ -n "$(rpm-ostree status | grep 'kinoite\|sericea\|silverblue\|sway')" ] ; then
+        echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
+        echo "If you have not already done so, please run 'ujust toggle-xwayland' and reboot to enable it."
+        toggle_xwayland_now=""
+        read -p "Would you like to toggle Xwayland now? [y/N] " toggle_xwayland_now
+        if [[ "$toggle_xwayland_now" == [Yy]* ]]; then
+            echo "Running 'ujust toggle-xwayland'"
+            ujust toggle-xwayland
+            reboot_now=""
+            read -p "Would you like to reboot now? [y/N] " reboot_now
+            if [[ "$reboot_now" == [Yy]* ]]; then
+                echo "Rebooting"
+                systemctl reboot
+            fi
+        fi
+    fi
+    valid_input="0"
+    method_selection=""
+    echo "Please select a method to install steam:"
+    echo "    1) Flatpak - will enable the flathub-unverified repo"
+    echo "    2) Distrobox - will configure the bazzite-arch distrobox image"
+    echo "    3) Native layer - will enable the negativo17 Steam repo"
+    while [[ "$valid_input" == "0" ]]; do
+        read -p "Selection [1-3]: " method_selection
+        if [[ "$method_selection" == [123]* ]]; then
+            valid_input="1"
+        else
+            echo "That is not a valid selection."
+        fi
+    done
+    valid_input="0"
+
+    echo "" # blank space
+    case "$method_selection" in
+        1)
+            echo "Flatpak method selected."
+            echo "Enabling the unfiltered Flathub repo."
+            ujust enable-flathub-unfiltered
+            echo "Installing Steam flatpak."
+            flatpak install -y flathub com.valvesoftware.Steam
+            echo "Disabling hardened_malloc for Steam."
+            flatpak override --user --unset-env=LD_PRELOAD --nofilesystem=host-os com.valvesoftware.Steam
+            ;;
+        2)
+            echo "Distrobox method selected."
+            echo "Creating bazzite-arch distrobox."
+            distrobox-create --unshare-netns --nvidia --image ghcr.io/ublue-os/bazzite-arch --name bazzite-arch -Y
+            echo "Exporting Steam from bazzite-arch distrobox."
+            distrobox-enter -n bazzite-arch -- distrobox-export --app steam
+            ;;
+        3)
+            echo "Native layer method selected."
+            echo "Enabling negativo17 Steam repo."
+            run0 curl -o /etc/yum.repos.d/negativo17-fedora-steam.repo https://negativo17.org/repos/fedora-steam.repo
+            echo "Installing Steam."
+            rpm-ostree install steam
+            ;;
+    esac
+
+    echo "Steam requires support for 32-bit processes/syscalls."
+    if [ -n "$(rpm-ostree kargs | grep 'ia32_emulation=0')" ] ; then
+        echo "This script will now remove the 'ia32_emulation=0' kernel argument."
+        rpm-ostree kargs --delete-if-present="ia32_emulation=0"
+    else
+        echo "Do not set the 'ia32_emulation=0' kernel argument."
+    fi
+    if [[ "$method_selection" == 3 ]]; then
+        echo "Steam native layer installed. Please reboot to access the new deployment"
+        reboot_now=""
+        read -p "Would you like to reboot now? [y/N] " reboot_now
+        if [[ "$reboot_now" == [Yy]* ]]; then
+            echo "Rebooting"
+            systemctl reboot
+        fi
+    fi
