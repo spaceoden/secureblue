@@ -206,6 +206,7 @@ install-steam:
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
                 container_userns_now=""
                 read -p "Would you like to run 'ujust toggle-container-domain-userns-creation' now? [Y/n] " container_userns_now
+                container_userns_now=${container_userns_now:-y}
                 if [[ "$container_userns_now" == [Yy]* ]]; then
                     echo "Running 'ujust toggle-container-domain-userns-creation'"
                     ujust toggle-container-domain-userns-creation
