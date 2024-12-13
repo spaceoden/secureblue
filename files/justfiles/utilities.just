@@ -150,7 +150,7 @@ with-standard-malloc APP:
 # Add the unfiltered Flathub flatpak repo
 enable-flathub-unfiltered:
     #!/usr/bin/bash
-    flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak remote-add --if-not-exists --user flathub-unfiltered https://flathub.org/repo/flathub.flatpakrepo
 
 # Install Steam via choice of 3 methods
 install-steam:
@@ -191,7 +191,7 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            if [ -z "$(flatpak remotes | grep 'flathub user')" ] ; then
+            if [ -z "$(flatpak remotes | grep 'flathub-unfiltered')" ] ; then
                 echo "Steam's flatpak is only available from the unverified subset of Flathub"
                 echo "You can enable the unfiltered Flathub repo by running 'ujust enable-flathub-unfiltered'"
                 flathub_unfiltered_now=""
