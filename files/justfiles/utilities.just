@@ -192,7 +192,7 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            if
+            if [ -z "$(flatpak remotes | grep 'flathub user')" ] ; then
                 echo "Steam's flatpak is only available from the unverified subset of Flathub"
                 echo "You can enable the unfiltered Flathub repo by running 'ujust enable-flathub-unfiltered'"
                 flathub_unfiltered_now=""
