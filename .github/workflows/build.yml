@@ -21,7 +21,6 @@ jobs:
       matrix:
         recipe:
           - general/recipe-silverblue-main.yml
-          - general/recipe-silverblue-main-userns.yml
     steps:
       - name: Checkout repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
