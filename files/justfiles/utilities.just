@@ -154,7 +154,7 @@ enable-flathub-unfiltered:
 
 # Install Steam via choice of 3 methods
 install-steam:
-    #!/bin/bash
+    #! /bin/run0 /bin/bash
     if [ -z "$(pgrep Xwayland)" ] ; then
         echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
         echo "Please run 'ujust toggle-xwayland' to re-enable it."
@@ -209,7 +209,6 @@ install-steam:
             ;;
         2)
             echo "Distrobox method selected."
-            run0
             if [ -z "$(semodule -l | grep -q 'harden_container_userns')" ] ; then
                 echo "Distrobox requires that secureblue's harden-container-userns module be disabled"
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
@@ -221,7 +220,6 @@ install-steam:
                     ujust toggle-container-domain-userns-creation
                 fi
             fi
-            exit
             echo "Creating bazzite-arch distrobox."
             distrobox-create --unshare-netns --nvidia --image ghcr.io/ublue-os/bazzite-arch --name bazzite-arch -Y
             echo "Exporting Steam from bazzite-arch distrobox."
@@ -229,7 +227,6 @@ install-steam:
             ;;
         3)
             echo "Native layer method selected."
-            run0
             if [ -z "$(semodule -l | grep -q 'harden_userns')" ] ; then
                 echo "Steam rpm requires that secureblue's harden_userns module be disabled"
                 echo "Please run 'ujust toggle-unconfined-domain-userns-creation'"
@@ -243,7 +240,6 @@ install-steam:
             fi
             echo "Installing Steam."
             rpm-ostree install steam
-            exit
             ;;
     esac
 
