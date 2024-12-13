@@ -201,7 +201,7 @@ install-steam:
             ;;
         2)
             echo "Distrobox method selected."
-            if semodule -l | grep -q "$MODULE_NAME"; then
+            if semodule -l | grep -q "harden_container_userns"; then
                 echo "Distrobox requires that secureblue's harden-container-userns module be disabled"
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
                 container_userns_now=""
