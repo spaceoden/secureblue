@@ -192,7 +192,7 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            if [ -z "$(flatpak remotes | grep 'flathub user')" ] ; then
+            if [ -z "$(flatpak remotes | grep 'flathub-unfiltered')" ] ; then
                 echo "Steam's flatpak is only available from the unverified subset of Flathub"
                 echo "You can enable the unfiltered Flathub repo by running 'ujust enable-flathub-unfiltered'"
                 flathub_unfiltered_now=""
@@ -209,6 +209,7 @@ install-steam:
             ;;
         2)
             echo "Distrobox method selected."
+            run0
             if [ -z "$(semodule -l | grep -q 'harden_container_userns')" ] ; then
                 echo "Distrobox requires that secureblue's harden-container-userns module be disabled"
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
@@ -220,6 +221,7 @@ install-steam:
                     ujust toggle-container-domain-userns-creation
                 fi
             fi
+            exit
             echo "Creating bazzite-arch distrobox."
             distrobox-create --unshare-netns --nvidia --image ghcr.io/ublue-os/bazzite-arch --name bazzite-arch -Y
             echo "Exporting Steam from bazzite-arch distrobox."
@@ -227,6 +229,7 @@ install-steam:
             ;;
         3)
             echo "Native layer method selected."
+            run0
             if [ -z "$(semodule -l | grep -q 'harden_userns')" ] ; then
                 echo "Steam rpm requires that secureblue's harden_userns module be disabled"
                 echo "Please run 'ujust toggle-unconfined-domain-userns-creation'"
@@ -240,6 +243,7 @@ install-steam:
             fi
             echo "Installing Steam."
             rpm-ostree install steam
+            exit
             ;;
     esac
 
