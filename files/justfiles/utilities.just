@@ -219,6 +219,17 @@ install-steam:
             ;;
         3)
             echo "Native layer method selected."
+            if [ -z "$(semodule -l | grep -q 'harden_userns')" ] ; then
+                echo "Steam rpm requires that secureblue's harden_userns module be disabled"
+                echo "Please run 'ujust toggle-unconfined-domain-userns-creation'"
+                unconfined_userns_now=""
+                read -p "Would you like to run 'ujust toggle-unconfined-domain-userns-creation' now? [Y/n] " unconfined_userns_now
+                unconfined_userns_now=${unconfined_userns_now:-y}
+                if [[ "$unconfined_userns_now" == [Yy]* ]]; then
+                    echo "Running 'ujust toggle-unconfined-domain-userns-creation'"
+                    ujust toggle-unconfined-domain-userns-creation
+                fi
+            fi
             echo "Installing Steam."
             rpm-ostree install steam
             ;;
