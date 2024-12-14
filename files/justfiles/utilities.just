@@ -208,7 +208,7 @@ install-steam:
             ;;
         2)
             echo "Distrobox method selected."
-            if [ -z "$(ujust semodule-check harden_container_userns)" ] ; then
+            if [ -n "$(ujust semodule-check harden_container_userns)" ] ; then
                 echo "Distrobox requires that secureblue's harden-container-userns module be disabled"
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
                 container_userns_now=""
@@ -226,7 +226,7 @@ install-steam:
             ;;
         3)
             echo "Native layer method selected."
-            if [ -z "$(ujust semodule-check harden_userns)" ] ; then
+            if [ -n "$(ujust semodule-check harden_userns)" ] ; then
                 echo "Steam rpm requires that secureblue's harden_userns module be disabled"
                 echo "Please run 'ujust toggle-unconfined-domain-userns-creation'"
                 unconfined_userns_now=""
