@@ -123,9 +123,18 @@ toggle-xwayland ACTION="prompt":
     source /usr/lib/ujust/ujust.sh
     OPTION={{ ACTION }}
     if [ "$OPTION" == "prompt" ]; then
-      echo "${bold}Toggling Xwayland (requires logout)${normal}"
-      echo 'For which DE/WM do you want to toggle Xwayland?'
-      OPTION=$(ugum choose "GNOME" "KDE Plasma" "Sway")
+      IMAGE="$(rpm-ostree status | grep '●')"
+      if [ -n "$(echo $IMAGE | grep 'silverblue')" ] ; then
+          OPTION=gnome
+      elif [ -n "$(echo $IMAGE | grep 'kinoite')" ] ; then
+          OPTION=plasma
+      elif [ -n "$(echo $IMAGE | grep 'sericea')" ] || [ -n "$(echo $IMAGE | grep 'sway')" ] ; then
+          OPTION=sway
+      else
+        echo "${bold}Toggling Xwayland (requires logout)${normal}"
+        echo 'For which DE/WM do you want to toggle Xwayland?'
+        OPTION=$(ugum choose "GNOME" "KDE Plasma" "Sway")
+      fi
     elif [ "$OPTION" == "help" ]; then
       echo "Usage: ujust toggle-xwayland <option>"
       echo "  <option>: Specify the quick option - 'gnome', 'plasma', or 'sway'"
