@@ -222,26 +222,17 @@ toggle-bash-environment-lockdown:
       echo "Capitalization matters when you type \"YES I UNDERSTAND\""
     fi
 
-# Toggle unconfined domain userns creation
-toggle-unconfined-domain-userns-creation:
+# Toggle either unconfined or container domain userns creation
+toggle-userns-creation MODULE:
     #! /bin/run0 /bin/bash
-    MODULE_NAME="harden_userns"
-
-    if semodule -l | grep -q "$MODULE_NAME"; then
-        echo "Module $MODULE_NAME is currently enabled. Disabling it..."
-        semodule --disable="$MODULE_NAME"
-        echo "Module $MODULE_NAME disabled."
+    if [ {{ MODULE }} == container ] ; then
+        MODULE_NAME="harden_container_userns"
+    elif [ {{ MODULE }} == unconfined ] ; then
+        MODULE_NAME="harden_userns"
     else
-        echo "Module $MODULE_NAME is not currently enabled. Enabling it..."
-        semodule --enable="$MODULE_NAME"
-        echo "Module $MODULE_NAME enabled."
+        echo "Invalid input. Valid options are 'container' or 'unconfined'."
+        exit 0
     fi
-
-# Toggle container domain userns creation
-toggle-container-domain-userns-creation:
-    #! /bin/run0 /bin/bash
-    MODULE_NAME="harden_container_userns"
-
     if semodule -l | grep -q "$MODULE_NAME"; then
         echo "Module $MODULE_NAME is currently enabled. Disabling it..."
         semodule --disable="$MODULE_NAME"
