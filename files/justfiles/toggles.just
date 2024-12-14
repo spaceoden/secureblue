@@ -260,3 +260,24 @@ toggle-container-domain-userns-creation:
         semodule --enable="$MODULE_NAME"
         echo "Module $MODULE_NAME enabled."
     fi
+
+# Toggle either unconfined or container domain userns creation
+toggle-userns-creation MODULE:
+    #! /bin/run0 /bin/bash
+    if [ {{ MODULE }} == container ] ; then
+        MODULE_NAME="harden_container_userns"
+    elif [ {{ MODULE }} == unconfined ] ; then
+        MODULE_NAME="harden_userns"
+    else
+        echo "Invalid input. Valid options are 'container' or 'unconfined'."
+        exit 0
+    fi
+    if semodule -l | grep -q "$MODULE_NAME"; then
+        echo "Module $MODULE_NAME is currently enabled. Disabling it..."
+        semodule --disable="$MODULE_NAME"
+        echo "Module $MODULE_NAME disabled."
+    else
+        echo "Module $MODULE_NAME is not currently enabled. Enabling it..."
+        semodule --enable="$MODULE_NAME"
+        echo "Module $MODULE_NAME enabled."
+    fi
