@@ -199,16 +199,8 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            if [ -z "$(flatpak remotes | grep 'flathub-unfiltered')" ] ; then
-                echo "Steam's flatpak is only available from the unverified subset of Flathub"
-                echo "You can enable the unfiltered Flathub repo by running 'ujust enable-flathub-unfiltered'"
-                flathub_unfiltered_now=""
-                read -p "Would you like to run 'ujust enable-flathub-unfiltered' now? [Y/n] " flathub_unfiltered_now
-                if [[ "$flathub_unfiltered_now" != [Nn]* ]]; then
-                    echo "Running 'ujust enable-flathub-unfiltered'"
-                    ujust enable-flathub-unfiltered
-                fi
-            fi
+            echo "Enabling the unfiltered Flathub repo."
+            ujust enable-flathub-unfiltered
             echo "Installing Steam flatpak."
             flatpak install -y flathub com.valvesoftware.Steam
             echo "Disabling hardened_malloc for Steam."
