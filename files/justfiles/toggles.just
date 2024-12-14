@@ -134,7 +134,7 @@ toggle-xwayland ACTION="prompt":
       echo "  Use 'sway' to Toggle Xwayland for Sway."
       exit 0
     fi
-    if [ "$OPTION" == "GNOME" ] || [ "${OPTION,,}" == "gnome" ]; then
+    if [ "${OPTION,,}" == "gnome" ]; then
       GNOME_XWAYLAND_FILE="/etc/systemd/user/org.gnome.Shell@wayland.service.d/override.conf"
       if test -e $GNOME_XWAYLAND_FILE; then
         rm -f $GNOME_XWAYLAND_FILE
@@ -144,7 +144,7 @@ toggle-xwayland ACTION="prompt":
         chmod 644 $GNOME_XWAYLAND_FILE
         echo "Xwayland for GNOME has been disabled."
       fi
-    elif [ "$OPTION" == "KDE Plasma" ] || [ "${OPTION,,}" == "plasma" ]; then
+    elif [ "${OPTION,,}" == "KDE Plasma" ] || [ "${OPTION,,}" == "plasma" ]; then
       PLASMA_XWAYLAND_FILE="/etc/systemd/user/plasma-kwin_wayland.service.d/override.conf"
       if test -e $PLASMA_XWAYLAND_FILE; then
         rm -f $PLASMA_XWAYLAND_FILE
@@ -154,7 +154,7 @@ toggle-xwayland ACTION="prompt":
         chmod 644 $PLASMA_XWAYLAND_FILE
         echo "Xwayland for KDE Plasma has been disabled."
       fi
-    elif [ "$OPTION" == "Sway" ] || [ "${OPTION,,}" == "sway" ]; then
+    elif [ "${OPTION,,}" == "sway" ]; then
       SWAY_XWAYLAND_FILE="/etc/sway/config.d/99-noxwayland.conf"
       if test -e $SWAY_XWAYLAND_FILE; then
         rm -f $SWAY_XWAYLAND_FILE
