@@ -155,8 +155,8 @@ enable-flathub-unfiltered:
 # search for an installed SELinux module
 semodule-check MODULE
     #! /bin/run0 /bin/bash
-    if [ semodule -l | grep {{ MODULE }} ] ; then
-    semodule -l | grep {{ MODULE }}
+    if [ "$( semodule -l | grep {{ MODULE }} )" ] ; then
+        semodule -l | grep {{ MODULE }}
     fi
 
 # Install Steam via choice of 3 methods
