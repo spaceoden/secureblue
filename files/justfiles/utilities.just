@@ -155,8 +155,8 @@ enable-flathub-unfiltered:
 # Install Steam via choice of 3 methods
 install-steam:
     #!/bin/bash
-    if [ -z "$(pgrep Xwayland)" ] ; then
-        echo "Steam requires Xwayland, which your variant of secureblue has disabled by default."
+    if [ -z "$(pgrep Xwayland)" ] && [ -z "$(pgrep Xorg)" ] ; then
+        echo "Steam requires X or Xwayland, which your variant of secureblue has disabled by default."
         echo "Please run 'ujust toggle-xwayland' to re-enable it."
         toggle_xwayland_now=""
         read -p "Would you like to run 'ujust toggle-xwayland' now? [Y/n] " toggle_xwayland_now
