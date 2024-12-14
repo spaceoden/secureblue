@@ -153,7 +153,7 @@ enable-flathub-unfiltered:
     flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # search for an installed SELinux module
-semodule-check MODULE
+semodule-check MODULE:
     #! /bin/run0 /bin/bash
     semodule -l | grep {{ MODULE }}
 
