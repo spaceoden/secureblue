@@ -152,9 +152,16 @@ enable-flathub-unfiltered:
     #!/usr/bin/bash
     flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
 
+# search for an installed SELinux module
+semodule-check MODULE:
+    #! /bin/run0 /bin/bash
+    if [ -n "$( semodule -l | grep {{ MODULE }} )" ] ; then
+    semodule -l | grep {{ MODULE }}
+    fi
+
 # Install Steam via choice of 3 methods
 install-steam:
-    #!/bin/bash
+    #!/usr/bin/bash
     if [ -z "$(pgrep Xwayland)" ] && [ -z "$(pgrep Xorg)" ] ; then
         echo "Steam requires X or Xwayland, which your variant of secureblue has disabled by default."
         echo "Please run 'ujust toggle-xwayland' to re-enable it."
@@ -192,8 +199,16 @@ install-steam:
     case "$method_selection" in
         1)
             echo "Flatpak method selected."
-            echo "Enabling the unfiltered Flathub repo."
-            ujust enable-flathub-unfiltered
+            if [ -z "$(flatpak remotes | grep 'flathub-unfiltered')" ] ; then
+                echo "Steam's flatpak is only available from the unverified subset of Flathub"
+                echo "You can enable the unfiltered Flathub repo by running 'ujust enable-flathub-unfiltered'"
+                flathub_unfiltered_now=""
+                read -p "Would you like to run 'ujust enable-flathub-unfiltered' now? [Y/n] " flathub_unfiltered_now
+                if [[ "$flathub_unfiltered_now" != [Nn]* ]]; then
+                    echo "Running 'ujust enable-flathub-unfiltered'"
+                    ujust enable-flathub-unfiltered
+                fi
+            fi
             echo "Installing Steam flatpak."
             flatpak install -y flathub com.valvesoftware.Steam
             echo "Disabling hardened_malloc for Steam."
@@ -201,8 +216,8 @@ install-steam:
             ;;
         2)
             echo "Distrobox method selected."
-            if [ -z "$(semodule -l | grep -q 'harden_container_userns')" ] ; then
-                echo "Distrobox requires that secureblue's harden_container_userns module be disabled"
+            if [ -z "$(ujust semodule-check harden_container_userns)" ] ; then
+                echo "Distrobox requires that secureblue's harden-container-userns module be disabled"
                 echo "Please run 'ujust toggle-container-domain-userns-creation'"
                 container_userns_now=""
                 read -p "Would you like to run 'ujust toggle-container-domain-userns-creation' now? [Y/n] " container_userns_now
@@ -219,7 +234,7 @@ install-steam:
             ;;
         3)
             echo "Native layer method selected."
-            if [ -z "$(semodule -l | grep -q 'harden_userns')" ] ; then
+            if [ -z "$(ujust semodule-check harden_userns)" ] ; then
                 echo "Steam rpm requires that secureblue's harden_userns module be disabled"
                 echo "Please run 'ujust toggle-unconfined-domain-userns-creation'"
                 unconfined_userns_now=""
